@@ -14,6 +14,8 @@
             --light: #ecf0f1;
             --dark: #1a2530;
             --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --success: #27ae60;
+            --error: #e74c3c;
         }
         
         * {
@@ -127,6 +129,14 @@
         
         nav a:hover {
             color: var(--accent);
+        }
+        
+        nav a.active {
+            color: var(--accent);
+        }
+        
+        nav a.active:after {
+            width: 100%;
         }
         
         nav a:after {
@@ -412,6 +422,60 @@
             border: 1px solid #ddd;
             border-radius: 4px;
             font-family: 'Roboto', sans-serif;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .form-error {
+            color: var(--error);
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+            display: none;
+        }
+        
+        .form-success {
+            background-color: var(--success);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        .form-success i {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        
+        .loading i {
+            font-size: 2rem;
+            color: var(--accent);
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
         /* Footer */
@@ -537,7 +601,7 @@
             
             <nav>
                 <ul id="navMenu">
-                    <li><a href="#home">Home</a></li>
+                    <li><a href="#home" class="active">Home</a></li>
                     <li><a href="#about">About</a></li>
                     <li><a href="#classes">Classes</a></li>
                     <li><a href="#instructors">Instructors</a></li>
@@ -553,7 +617,7 @@
         <div class="container">
             <h1>Discover Your Inner Strength</h1>
             <p>Join our local martial arts community and develop discipline, confidence, and physical fitness in a supportive environment. We offer classes for all ages and skill levels.</p>
-            <a href="#classes" class="btn">View Our Classes</a>
+            <a href="#contact" class="btn">Start Your Journey Today</a>
         </div>
     </section>
 
@@ -773,39 +837,102 @@
                             <p>Sunday: Closed</p>
                         </div>
                     </div>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <h3>Free Trial Class</h3>
+                            <p>All new students get one free trial class!</p>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="contact-form" action="https://formsubmit.co/el/riwida" method="POST">
+                <div class="contact-form">
+                    <div class="form-success" id="formSuccess">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>Message Sent Successfully!</h3>
+                        <p>Thank you for contacting Zenith Martial Arts. We'll get back to you within 24 hours.</p>
+                        <p><small>You should receive a confirmation email shortly.</small></p>
+                    </div>
+                    
                     <h3>Send a Message</h3>
-                    <form id="contactForm"> 
+                    <p>Fill out the form below and we'll contact you shortly.</p>
+                    
+                    <!-- FormSubmit.co Form - CORRECTED SETTINGS -->
+                    <form id="contactForm" action="https://formsubmit.co/riwida" method="POST">
+                        <!-- IMPORTANT: FormSubmit Configuration -->
+                        <input type="hidden" name="_subject" value="New Inquiry - Zenith Martial Arts Club">
+                        <input type="hidden" name="_template" value="table">
+                        <input type="hidden" name="_captcha" value="false">
+                        <input type="hidden" name="_next" value="#contact">
+                        <input type="hidden" name="_autoresponse" value="Thank you for contacting Zenith Martial Arts! We have received your message and will get back to you within 24 hours. Looking forward to helping you start your martial arts journey!">
+                        
                         <div class="form-group">
-                            <label for="name">Full Name</label>
-                            <input type="text" id="name" placeholder="Your Name" required>
+                            <label for="name">Full Name *</label>
+                            <input type="text" id="name" name="name" placeholder="Your Name" required>
+                            <div class="form-error" id="nameError">Please enter your full name</div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" id="email" placeholder="Your Email" required>
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                            <div class="form-error" id="emailError">Please enter a valid email address</div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="interest">Interested In</label>
-                            <select id="interest">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="interest">Interested In *</label>
+                            <select id="interest" name="interest" required>
                                 <option value="">Select a class</option>
                                 <option value="karate">Karate</option>
                                 <option value="judo">Judo</option>
                                 <option value="taekwondo">Taekwondo</option>
                                 <option value="kids">Kids Classes</option>
                                 <option value="private">Private Lessons</option>
+                                <option value="trial">Free Trial Class</option>
+                                <option value="general">General Inquiry</option>
+                            </select>
+                            <div class="form-error" id="interestError">Please select an option</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="age">Age Group</label>
+                            <select id="age" name="age">
+                                <option value="">Select age group</option>
+                                <option value="child">Child (5-12)</option>
+                                <option value="teen">Teen (13-17)</option>
+                                <option value="adult">Adult (18+)</option>
+                                <option value="senior">Senior (55+)</option>
                             </select>
                         </div>
                         
                         <div class="form-group">
-                            <label for="message">Message</label>
-                            <textarea id="message" rows="5" placeholder="Your message or questions..."></textarea>
+                            <label for="experience">Previous Experience</label>
+                            <select id="experience" name="experience">
+                                <option value="">Select experience level</option>
+                                <option value="none">No Experience (Beginner)</option>
+                                <option value="some">Some Experience</option>
+                                <option value="intermediate">Intermediate</option>
+                                <option value="advanced">Advanced</option>
+                            </select>
                         </div>
                         
-                        <button type="submit" class="btn">Send Message</button>
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" rows="5" placeholder="Tell us about your goals, experience level, or any questions you have..." required></textarea>
+                            <div class="form-error" id="messageError">Please enter your message</div>
+                        </div>
+                        
+                        <div class="loading" id="formLoading">
+                            <i class="fas fa-spinner"></i>
+                            <p>Sending your message...</p>
+                        </div>
+                        
+                        <button type="submit" class="btn" id="submitBtn">Send Message</button>
                     </form>
                 </div>
             </div>
@@ -841,16 +968,16 @@
                 <div>
                     <h3>Newsletter</h3>
                     <p>Subscribe to receive updates on classes, events, and special offers.</p>
-                    <div style="display: flex; margin-top: 1rem;">
-                        <input type="email" placeholder="Your email" style="flex: 1; padding: 0.8rem; border: none; border-radius: 4px 0 0 4px;">
-                        <button class="btn" style="border-radius: 0 4px 4px 0; padding: 0.8rem 1.5rem;">Subscribe</button>
-                    </div>
+                    <form id="newsletterForm" style="display: flex; margin-top: 1rem;">
+                        <input type="email" name="newsletter-email" placeholder="Your email" required style="flex: 1; padding: 0.8rem; border: none; border-radius: 4px 0 0 4px;">
+                        <button type="submit" class="btn" style="border-radius: 0 4px 4px 0; padding: 0.8rem 1.5rem;">Subscribe</button>
+                    </form>
                 </div>
             </div>
             
             <div class="copyright">
                 <p>&copy; 2023 Zenith Martial Arts Club. All rights reserved.</p>
-                <p>This website is a demonstration for client proposal.</p>
+                <p>123 Martial Way, Springfield, ST 12345 | (555) 123-4567 | info@zenithmartialarts.com</p>
             </div>
         </div>
     </footer>
@@ -889,26 +1016,137 @@
                         top: targetElement.offsetTop - 80,
                         behavior: 'smooth'
                     });
+                    
+                    // Update active nav link
+                    document.querySelectorAll('nav a').forEach(link => {
+                        link.classList.remove('active');
+                    });
+                    this.classList.add('active');
                 }
             });
         });
         
-        // Contact Form Submission
+        // Form validation and submission
         const contactForm = document.getElementById('contactForm');
-        contactForm.addEventListener('submit', function(e) {
+        const formSuccess = document.getElementById('formSuccess');
+        const formLoading = document.getElementById('formLoading');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        contactForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // Get form values
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const interest = document.getElementById('interest').value;
+            // Reset errors
+            document.querySelectorAll('.form-error').forEach(error => {
+                error.style.display = 'none';
+            });
             
-            // In a real application, you would send this data to a server
-            // For this demo, we'll just show an alert
-            alert(`Thank you, ${name}! We have received your message and will contact you at ${email} about ${interest || 'martial arts classes'} soon.`);
+            // Validate form
+            let isValid = true;
+            const name = document.getElementById('name');
+            const email = document.getElementById('email');
+            const interest = document.getElementById('interest');
+            const message = document.getElementById('message');
             
-            // Reset form
-            contactForm.reset();
+            if (!name.value.trim()) {
+                document.getElementById('nameError').style.display = 'block';
+                isValid = false;
+            }
+            
+            if (!email.value.trim() || !isValidEmail(email.value)) {
+                document.getElementById('emailError').style.display = 'block';
+                isValid = false;
+            }
+            
+            if (!interest.value) {
+                document.getElementById('interestError').style.display = 'block';
+                isValid = false;
+            }
+            
+            if (!message.value.trim()) {
+                document.getElementById('messageError').style.display = 'block';
+                isValid = false;
+            }
+            
+            if (!isValid) {
+                return;
+            }
+            
+            // Show loading state
+            formLoading.style.display = 'block';
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+            
+            try {
+                // Submit the form to FormSubmit.co
+                const formData = new FormData(contactForm);
+                
+                // Add a timestamp to prevent caching
+                formData.append('_timestamp', new Date().getTime());
+                
+                const response = await fetch(contactForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    // Show success message
+                    formSuccess.style.display = 'block';
+                    contactForm.reset();
+                    
+                    // Scroll to success message
+                    formSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Hide success message after 8 seconds
+                    setTimeout(() => {
+                        formSuccess.style.display = 'none';
+                    }, 8000);
+                } else {
+                    throw new Error('Form submission failed');
+                }
+            } catch (error) {
+                // Fallback: Submit the form the traditional way
+                console.log('Using traditional form submission as fallback...');
+                
+                // Show success message anyway (FormSubmit will redirect)
+                formSuccess.style.display = 'block';
+                contactForm.reset();
+                
+                // Scroll to success message
+                formSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                // Hide success message after 8 seconds
+                setTimeout(() => {
+                    formSuccess.style.display = 'none';
+                }, 8000);
+                
+                // Actually submit the form (will redirect to FormSubmit)
+                contactForm.submit();
+            } finally {
+                // Hide loading state
+                formLoading.style.display = 'none';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Message';
+            }
+        });
+        
+        // Email validation function
+        function isValidEmail(email) {
+            const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        }
+        
+        // Newsletter form submission
+        const newsletterForm = document.getElementById('newsletterForm');
+        newsletterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const emailInput = this.querySelector('input[name="newsletter-email"]');
+            
+            // In a real application, you would send this to your server
+            alert(`Thank you for subscribing with ${emailInput.value}! You'll receive our newsletter soon.`);
+            emailInput.value = '';
         });
         
         // Add active class to nav links based on scroll position
@@ -922,18 +1160,32 @@
                 const sectionTop = section.offsetTop;
                 const sectionHeight = section.clientHeight;
                 
-                if(pageYOffset >= (sectionTop - 100)) {
+                if (window.pageYOffset >= (sectionTop - 100)) {
                     current = section.getAttribute('id');
                 }
             });
             
             navLinks.forEach(link => {
                 link.classList.remove('active');
-                if(link.getAttribute('href') === `#${current}`) {
+                if (link.getAttribute('href') === `#${current}`) {
                     link.classList.add('active');
                 }
             });
+            
+            // If at top of page, highlight home link
+            if (window.pageYOffset < 100) {
+                navLinks.forEach(link => link.classList.remove('active'));
+                document.querySelector('nav a[href="#home"]').classList.add('active');
+            }
         });
+        
+        // Initialize with home link active
+        document.querySelector('nav a[href="#home"]').classList.add('active');
+        
+        // Test FormSubmit connection
+        console.log('FormSubmit endpoint: https://formsubmit.co/riwida');
+        console.log('Make sure you have verified your email with FormSubmit.co');
+        console.log('Check your email spam folder if you don\'t see form submissions');
     </script>
 </body>
 </html>
